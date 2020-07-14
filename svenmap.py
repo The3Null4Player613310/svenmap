@@ -1,24 +1,82 @@
 import tkinter as tk
-
-
-class Svenmap(tk.Frame):
-    def __init__(self, window=None):
-        super().__init__(window)
-        self.window = window
-        self.pack()
-        self.setup_window()
-        self.create_widgets()
-
-    def setup_window(self):
-        self.window.title("svenmap")
-        self.window.geometry("900x650+0+0")
-
-    def create_widgets(self):
-        print("making widgets")
-
-
+from tkinter import ttk
 
 
 mainWindow = tk.Tk()
-svenMap = Svenmap(mainWindow)
-svenMap.mainloop()
+mainWindow.title("svenmap")
+
+mainMenu = tk.Menu(mainWindow)
+
+scanMenu = tk.Menu(mainMenu, tearoff=0)
+scanMenu.add_command(label="Scan", command=None)
+mainMenu.add_cascade(menu=scanMenu, label="Scan")
+
+toolsMenu = tk.Menu(mainMenu, tearoff=0)
+toolsMenu.add_command(label="Tools")
+mainMenu.add_cascade(menu=toolsMenu, label="Tools")
+
+profileMenu = tk.Menu(mainMenu, tearoff=0)
+profileMenu.add_command(label="Edit Current Profile")
+mainMenu.add_cascade(menu=profileMenu, label="Profile")
+
+helpMenu = tk.Menu(mainMenu, tearoff=0)
+helpMenu.add_command(label="F.A.Q.")
+helpMenu.add_command(label="Credits")
+mainMenu.add_cascade(menu=helpMenu, label="Help")
+
+mainWindow.config(menu=mainMenu)
+
+mainFrame = tk.Frame(mainWindow)
+scanFrame = tk.Frame(mainFrame)
+targetLabel = tk.Label(scanFrame, text="Target:")
+targetLabel.pack(side="left")
+targetEntry = tk.Entry(scanFrame)
+targetEntry.pack(side="left", fill="x", expand=1)
+profileLabel = tk.Label(scanFrame, text="Profile:")
+profileLabel.pack(side="left")
+profileEntry = tk.Entry(scanFrame)
+profileEntry.pack(side="left", fill="x", expand=1)
+scanButton = tk.Button(scanFrame, text="Scan")
+scanButton.pack(side="left")
+cancelButton = tk.Button(scanFrame, text="Cancel")
+cancelButton.pack(side="left")
+scanFrame.pack(side="top", fill="x")
+commandFrame = tk.Frame(mainFrame)
+commandLabel = tk.Label(commandFrame, text="Command:")
+commandLabel.pack(side="left")
+commandEntry = tk.Entry(commandFrame)
+commandEntry.pack(side="left", fill="x", expand=1)
+commandFrame.pack(side="top", fill="x")
+
+resultsFrame = tk.Frame(mainFrame)
+leftNotebook = ttk.Notebook(resultsFrame)
+hostsFrame = tk.Frame(leftNotebook)
+hostsFrame.pack(side="left", fill="y")
+leftNotebook.add(hostsFrame, text="Hosts")
+servicesFrame = tk.Frame(leftNotebook)
+servicesFrame.pack(side="left", fill="y")
+leftNotebook.add(servicesFrame, text="Services")
+leftNotebook.pack(side="left", fill="y")
+rightNotebook = ttk.Notebook(resultsFrame)
+outputFrame = tk.Frame(rightNotebook)
+outputText = tk.Text(outputFrame)
+outputText.pack(side="top", fill="both", expand=1)
+outputFrame.pack(side="left", fill="both", expand=1)
+rightNotebook.add(outputFrame, text="Nmap Output")
+detailsFrame = tk.Frame(rightNotebook)
+detailsFrame.pack(side="left", fill="both", expand=1)
+rightNotebook.add(detailsFrame, text="Host Details")
+topologyFrame = tk.Frame(rightNotebook)
+topologyFrame.pack(side="left", fill="both", expand=1)
+rightNotebook.add(topologyFrame, text="Topology")
+scansFrame = tk.Frame(rightNotebook)
+scansFrame.pack(side="left", fill="both", expand=1)
+rightNotebook.add(scansFrame, text="Scans")
+rightNotebook.pack(side="left", fill="both", expand=1)
+resultsFrame.pack(side="top", fill="both", expand=1)
+mainFrame.pack(side="top", fill="both", expand=1)
+
+mainWindow.update()
+mainWindow.minsize(mainWindow.winfo_width(), mainWindow.winfo_height())
+
+mainFrame.mainloop()
